@@ -13,6 +13,7 @@
             overflow: auto;
             color: #fff;
         }
+
         .header {
             background: linear-gradient(180deg, #1a1a3a 0%, #0a0a1a 100%);
             padding: 15px 30px;
@@ -21,112 +22,84 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .header h1 {
             font-size: 1.5rem;
             color: #00ff88;
             text-shadow: 0 0 20px rgba(0,255,136,0.5);
             letter-spacing: 3px;
         }
-        .status-bar {
-            display: flex;
-            gap: 20px;
-            font-size: 0.9rem;
-        }
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .live-indicator {
-            background: #00ff88;
-            color: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-        .main-container {
-            display: flex;
-            height: calc(100vh - 70px);
-        }
+
+        .status-bar { display: flex; gap: 20px; font-size: 0.9rem; }
+        .status-item { display: flex; align-items: center; gap: 8px; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .live-indicator { background: #00ff88; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; }
+        .live-dot { width: 8px; height: 8px; background: #00ff88; border-radius: 50%; display: inline-block; animation: blink 1s infinite; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .main-container { display: flex; height: calc(100vh - 70px); }
+
         .office-container {
             flex: 1;
             position: relative;
             background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
             overflow: hidden;
         }
+
         .office-container::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px),
-                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px);
+            inset: 0;
+            background-image: linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px), linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
         }
+
         .zone-label {
             position: absolute;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #00ffff;
             font-weight: 600;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
         }
-        .zone-dev { top: 20px; left: 50px; }
-        .zone-research { top: 20px; right: 50px; }
-        .zone-ops { bottom: 120px; left: 50px; }
+        .zone-dev      { top: 20px; left: 50px; color: #00ffff; }
+        .zone-research { top: 20px; right: 50px; color: #00ffff; }
+        .zone-ops       { bottom: 120px; left: 50px; color: #ffaa00; }
+        .zone-trading   { bottom: 120px; right: 50px; color: #ff6688; }
+
         .desk {
             position: absolute;
-            width: 120px;
-            height: 80px;
+            width: 120px; height: 80px;
             background: linear-gradient(145deg, #2a2a4a 0%, #1a1a3a 100%);
             border-radius: 4px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.5);
             border: 1px solid #3a3a5a;
             transition: all 0.3s;
         }
-        .desk.active {
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0,255,136,0.3);
-        }
+        .desk.active { border-color: #00ff88; box-shadow: 0 0 20px rgba(0,255,136,0.3); }
+        .desk-broker { width: 140px; border-color: #ff6688 !important; }
+        .desk-broker.active { box-shadow: 0 0 20px rgba(255,102,136,0.4); }
+
         .agent {
             position: absolute;
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             cursor: pointer;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
         }
-        .agent svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 0 10px currentColor);
-        }
+        .agent svg { width: 100%; height: 100%; filter: drop-shadow(0 0 10px currentColor); }
         .agent:hover { transform: scale(1.2); }
-        .agent.moving {
-            z-index: 200;
-            animation: bounce 0.5s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        .status-active { color: #00ff88; }
-        .status-idle { color: #ffaa00; }
-        .status-busy { color: #ff4444; }
+        .agent.moving { z-index: 200; animation: bounce 0.5s infinite; }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .status-active  { color: #00ff88; }
+        .status-idle    { color: #ffaa00; }
+        .status-busy    { color: #ff4444; }
         .status-offline { color: #666; }
+        .status-alert   { color: #ff6688; animation: alertPulse 0.5s infinite; }
+        @keyframes alertPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
         .agent-label {
             position: absolute;
             font-size: 0.7rem;
@@ -136,62 +109,28 @@
             border-radius: 4px;
             white-space: nowrap;
         }
-        .meeting-area {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+
+        .meeting-area { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         .meeting-table {
-            width: 250px;
-            height: 150px;
+            width: 250px; height: 150px;
             background: linear-gradient(145deg, #2a2a4a 0%, #1a1a3a 100%);
             border-radius: 15px;
             border: 2px solid #3a3a5a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             position: relative;
         }
-        .meeting-table.in-use {
-            border-color: #00ff88;
-            box-shadow: 0 0 30px rgba(0,255,136,0.2);
-        }
-        .meeting-table::before {
-            content: 'CONFERENCE';
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: rgba(0,255,136,0.3);
-        }
-        .side-panel {
-            width: 350px;
-            background: #0f0f1a;
-            border-left: 1px solid #2a2a4a;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        .panel-section {
-            padding: 20px;
-            border-bottom: 1px solid #1a1a3a;
-        }
-        .panel-section h3 {
-            color: #00ff88;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-        }
-        .task-list, .meeting-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
+        .meeting-table.in-use { border-color: #00ff88; box-shadow: 0 0 30px rgba(0,255,136,0.2); }
+        .meeting-table::before { content: 'CONFERENCE'; font-size: 0.7rem; letter-spacing: 2px; color: rgba(0,255,136,0.3); }
+
+        /* ─── Side Panel ─── */
+        .side-panel { width: 370px; background: #0f0f1a; border-left: 1px solid #2a2a4a; display: flex; flex-direction: column; overflow-y: auto; }
+        .panel-section { padding: 18px 20px; border-bottom: 1px solid #1a1a3a; }
+        .panel-section h3 { color: #00ff88; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+
+        .task-list, .meeting-list, .alert-list { max-height: 180px; overflow-y: auto; }
         .task-item, .meeting-item {
-            background: #1a1a3a;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            font-size: 0.85rem;
+            background: #1a1a3a; padding: 10px; margin-bottom: 8px;
+            border-radius: 4px; font-size: 0.85rem;
         }
         .task-item { border-left: 3px solid #00ff88; }
         .task-item.pending { border-left-color: #ffaa00; }
@@ -201,455 +140,509 @@
         .meeting-type { color: #00ff88; font-size: 0.75rem; text-transform: uppercase; }
         .meeting-topic { color: #fff; margin: 4px 0; }
         .meeting-participants { color: #666; font-size: 0.75rem; }
-        .quick-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+
+        /* ─── Broker Alert Panel ─── */
+        .broker-section { background: #1a0a10; border-left: 3px solid #ff6688; }
+        .broker-section h3 { color: #ff6688; }
+        .broker-status { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .broker-status-dot { width: 10px; height: 10px; border-radius: 50%; background: #ff6688; animation: pulse 2s infinite; }
+        .broker-last-scan { font-size: 0.75rem; color: #666; margin-bottom: 10px; }
+        .alert-item { background: #1a1a3a; border-radius: 4px; padding: 10px; margin-bottom: 8px; border-left: 3px solid #ff6688; }
+        .alert-item.severe { border-left-color: #ff0044; background: #1a0510; }
+        .alert-item.high { border-left-color: #ff4444; }
+        .alert-item.caution { border-left-color: #ffaa00; }
+        .alert-ticker { font-weight: bold; color: #ff6688; font-size: 0.9rem; }
+        .alert-message { color: #ccc; font-size: 0.8rem; margin: 4px 0; }
+        .alert-meta { color: #666; font-size: 0.7rem; display: flex; gap: 10px; }
+        .no-alerts { color: #444; font-size: 0.8rem; text-align: center; padding: 10px; }
+
+        /* ─── Broker Alert Popup ─── */
+        .alert-popup-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 9998;
+            display: flex; align-items: center; justify-content: center;
+            animation: fadeIn 0.3s ease;
         }
-        .action-btn {
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .alert-popup {
             background: #1a1a3a;
-            border: 1px solid #3a3a5a;
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s;
+            border: 2px solid #ff6688;
+            border-radius: 16px;
+            padding: 36px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 0 60px rgba(255,102,136,0.4);
+            animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
         }
-        .action-btn:hover {
-            background: #2a2a4a;
-            border-color: #00ff88;
-            color: #00ff88;
+        @keyframes slideIn { from { transform: scale(0.8) translateY(-20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        .alert-popup.severe-popup { border-color: #ff0044; box-shadow: 0 0 80px rgba(255,0,68,0.5); }
+        .alert-popup.high-popup { border-color: #ff4444; box-shadow: 0 0 60px rgba(255,68,68,0.4); }
+
+        .popup-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .popup-icon { font-size: 2.5rem; }
+        .popup-title { font-size: 1.1rem; font-weight: bold; color: #ff6688; }
+        .popup-title.severe { color: #ff0044; }
+        .popup-title.high { color: #ff4444; }
+        .popup-ticker { font-size: 2rem; font-weight: bold; color: #fff; font-family: monospace; }
+        .popup-body { margin-bottom: 16px; }
+        .popup-message { color: #ccc; font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; }
+        .popup-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+        .popup-stat { background: #0f0f1a; padding: 10px; border-radius: 6px; text-align: center; }
+        .popup-stat-label { color: #666; font-size: 0.7rem; text-transform: uppercase; }
+        .popup-stat-value { color: #fff; font-size: 1.2rem; font-weight: bold; margin-top: 2px; }
+        .popup-stat-value.red { color: #ff4444; }
+        .popup-stat-value.orange { color: #ffaa00; }
+        .popup-footer { display: flex; gap: 10px; justify-content: flex-end; }
+        .popup-btn {
+            padding: 10px 20px; border-radius: 6px;
+            font-size: 0.85rem; font-weight: bold; cursor: pointer; transition: all 0.2s;
         }
-        .log-console {
-            flex: 1;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.75rem;
-            padding: 15px;
-            max-height: 200px;
+        .popup-btn-primary { background: #ff6688; border: none; color: #000; }
+        .popup-btn-primary:hover { background: #ff4477; }
+        .popup-btn-severe { background: #ff0044; border: none; color: #fff; }
+        .popup-btn-severe:hover { background: #cc0033; }
+        .popup-btn-secondary { background: transparent; border: 1px solid #444; color: #888; }
+        .popup-btn-secondary:hover { border-color: #666; color: #aaa; }
+        .popup-telegram-note { text-align: center; font-size: 0.75rem; color: #444; margin-top: 12px; }
+
+        .quick-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .action-btn {
+            background: #1a1a3a; border: 1px solid #3a3a5a; color: #fff;
+            padding: 8px 15px; border-radius: 4px;
+            cursor: pointer; font-size: 0.8rem; transition: all 0.3s;
         }
+        .action-btn:hover { background: #2a2a4a; border-color: #00ff88; color: #00ff88; }
+        .log-console { flex: 1; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.75rem; padding: 15px; max-height: 200px; }
         .log-entry { margin-bottom: 5px; color: #888; }
-        .log-entry.info { color: #00ff88; }
-        .log-entry.warn { color: #ffaa00; }
+        .log-entry.info  { color: #00ff88; }
+        .log-entry.warn  { color: #ffaa00; }
         .log-entry.error { color: #ff4444; }
+        .log-entry.broker { color: #ff6688; }
         .log-time { color: #4a4a6a; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🎯 MISSION CONTROL</h1>
-        <div class="status-bar">
-            <div class="status-item">
-                <span class="status-dot" style="background: #00ff88;"></span>
-                <span id="active-count">0 Active</span>
+
+<!-- Broker Alert Popup (hidden by default) -->
+<div class="alert-popup-overlay" id="alertPopupOverlay" style="display:none;" onclick="dismissAlertPopup()">
+    <div class="alert-popup" id="alertPopup" onclick="event.stopPropagation()">
+        <div class="popup-header">
+            <span class="popup-icon" id="popupIcon">📈</span>
+            <div>
+                <div class="popup-ticker" id="popupTicker">—</div>
+                <div class="popup-title" id="popupTitle">Broker Alert</div>
             </div>
-            <div class="status-item">
-                <span class="status-dot" style="background: #ffaa00;"></span>
-                <span id="idle-count">0 Idle</span>
+        </div>
+        <div class="popup-body">
+            <p class="popup-message" id="popupMessage"></p>
+            <div class="popup-stats">
+                <div class="popup-stat">
+                    <div class="popup-stat-label">Trap Score</div>
+                    <div class="popup-stat-value" id="popupTrapScore">—</div>
+                </div>
+                <div class="popup-stat">
+                    <div class="popup-stat-label">Dilution</div>
+                    <div class="popup-stat-value red" id="popupDilution">—</div>
+                </div>
             </div>
-            <div class="status-item">
-                <span class="status-dot" style="background: #ff4444;"></span>
-                <span id="busy-count">0 Busy</span>
+        </div>
+        <div class="popup-footer">
+            <button class="popup-btn popup-btn-secondary" onclick="dismissAlertPopup()">Dismiss</button>
+            <button class="popup-btn popup-btn-primary" id="popupTelegramBtn" onclick="dismissAlertPopup()">📱 Telegram Sent</button>
+        </div>
+        <div class="popup-telegram-note">📱 Telegram notification triggered automatically</div>
+    </div>
+</div>
+
+<div class="header">
+    <h1>🎯 MISSION CONTROL — Stock To Me</h1>
+    <div class="status-bar">
+        <span style="color:#00ff88"><span class="live-dot"></span> LIVE</span>
+        <div class="status-item"><span class="status-dot" style="background:#00ff88;"></span><span id="active-count">0 Active</span></div>
+        <div class="status-item"><span class="status-dot" style="background:#ffaa00;"></span><span id="idle-count">0 Idle</span></div>
+        <div class="status-item"><span class="status-dot" style="background:#ff6688;"></span><span id="alert-count">0 Alerts</span></div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="office-container" id="office">
+        <div class="zone-label zone-dev">Development</div>
+        <div class="zone-label zone-research">Research</div>
+        <div class="zone-label zone-ops">Operations</div>
+        <div class="zone-label zone-trading">Trading</div>
+        <div class="meeting-area"><div class="meeting-table" id="meeting-table"></div></div>
+    </div>
+
+    <div class="side-panel">
+        <!-- Broker Alerts -->
+        <div class="panel-section broker-section">
+            <h3>📈 Broker Alerts</h3>
+            <div class="broker-status">
+                <div class="broker-status-dot"></div>
+                <span style="color:#ff6688;font-weight:bold;">Watcher Active</span>
             </div>
-            <div class="live-indicator">● LIVE</div>
+            <div class="broker-last-scan" id="brokerLastScan">Last scan: —</div>
+            <div class="alert-list" id="brokerAlertList">
+                <div class="no-alerts">No alerts — market clear</div>
+            </div>
+        </div>
+
+        <!-- Active Tasks -->
+        <div class="panel-section">
+            <h3>📋 Active Tasks</h3>
+            <div class="task-list" id="task-list"><div class="task-item"><div class="task-title">Loading...</div></div></div>
+        </div>
+
+        <!-- Meetings -->
+        <div class="panel-section">
+            <h3>🤝 Active Meetings</h3>
+            <div class="meeting-list" id="meeting-list"><div class="meeting-item"><div class="meeting-topic">No active meetings</div></div></div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="panel-section">
+            <h3>⚡ Quick Actions</h3>
+            <div class="quick-actions">
+                <button class="action-btn" onclick="startTeamMeeting()">Team Meeting</button>
+                <button class="action-btn" onclick="startBrokerResearch()">📈 Broker → Research</button>
+                <button class="action-btn" onclick="createTask()">New Task</button>
+                <button class="action-btn" onclick="refreshData()">Refresh</button>
+            </div>
+        </div>
+
+        <!-- System Log -->
+        <div class="panel-section">
+            <h3>📜 System Log</h3>
+            <div class="log-console" id="log-console">
+                <div class="log-entry"><span class="log-time">[--:--:--]</span> System initialized</div>
+            </div>
         </div>
     </div>
-    
-    <div class="main-container">
-        <div class="office-container" id="office">
-            <div class="zone-label zone-dev">Development</div>
-            <div class="zone-label zone-research">Research</div>
-            <div class="zone-label zone-ops">Operations</div>
-            
-            <div class="meeting-area">
-                <div class="meeting-table" id="meeting-table"></div>
-            </div>
-        </div>
-        
-        <div class="side-panel">
-            <div class="panel-section">
-                <h3>📋 Active Tasks</h3>
-                <div class="task-list" id="task-list">
-                    <div class="task-item"><div class="task-title">Loading...</div></div>
-                </div>
-            </div>
-            
-            <div class="panel-section">
-                <h3>🤝 Active Meetings</h3>
-                <div class="meeting-list" id="meeting-list">
-                    <div class="meeting-item"><div class="meeting-topic">No active meetings</div></div>
-                </div>
-            </div>
-            
-            <div class="panel-section">
-                <h3>⚡ Quick Actions</h3>
-                <div class="quick-actions">
-                    <button class="action-btn" onclick="startTeamMeeting()">Team Meeting</button>
-                    <button class="action-btn" onclick="createTask()">New Task</button>
-                    <button class="action-btn" onclick="refreshData()">Refresh</button>
-                </div>
-            </div>
-            
-            <div class="panel-section">
-                <h3>📜 System Log</h3>
-                <div class="log-console" id="log-console">
-                    <div class="log-entry"><span class="log-time">[--:--:--]</span> System initialized</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        const API_BASE = window.location.origin;
-        let agents = {}, tasks = {}, meetings = {};
-        let ws = null;
-        
-        const invaderSVG = `<svg viewBox="0 0 11 8"><path fill="currentColor" d="M1 0h1v1h1v1h2V1h1V0h1v1h1v1h1v1h-1v1h-1v1h-1V4H5v1H4v1H3V4H2V3H1V2H0V1h1V0zm2 6h1v1h1v1H4V7H3V6z"/></svg>`;
-        
-        // Default agent positions (will be overridden by API data)
-        const defaultPositions = {
-            alex: { x: 50, y: 60 },
-            jordan: { x: 190, y: 60 },
-            sam: { x: 1110, y: 60 },
-            taylor: { x: 1270, y: 60 },
-            morgan: { x: 50, y: 855 },
-            casey: { x: 190, y: 855 },
-            riley: { x: 630, y: 320 }
-        };
-        
-        async function init() {
-            log('Initializing Mission Control...', 'info');
-            await loadState();
-            renderOffice();
-            connectWebSocket();
-            setInterval(refreshData, 5000);
-        }
-        
-        async function loadState() {
-            try {
-                const response = await fetch(`${API_BASE}/api/state`);
-                const data = await response.json();
-                agents = data.agents || {};
-                tasks = data.tasks || {};
-                meetings = data.meetings || {};
+</div>
+
+<script>
+const API_BASE = window.location.origin;
+let agents = {}, tasks = {}, meetings = {}, brokerAlerts = [];
+let ws = null;
+let brokerAlertPopupShown = false;
+
+const invaderSVG = `<svg viewBox="0 0 11 8"><path fill="currentColor" d="M1 0h1v1h1v1h2V1h1V0h1v1h1v1h1v1h-1v1h-1v1h-1V4H5v1H4v1H3V4H2V3H1V2H0V1h1V0zm2 6h1v1h1v1H4V7H3V6z"/></svg>`;
+
+const defaultPositions = {
+    alex:   { x: 50,  y: 60 },
+    jordan: { x: 190, y: 60 },
+    sam:    { x: 1110, y: 60 },
+    taylor: { x: 1270, y: 60 },
+    morgan: { x: 50,  y: 500 },
+    casey:  { x: 190, y: 500 },
+    broker: { x: 1110, y: 500 },
+    riley:  { x: 630, y: 300 },
+};
+
+async function init() {
+    log('Mission Control loading...', 'info');
+    await loadState();
+    renderOffice();
+    connectWebSocket();
+    startBrokerPolling();
+    setInterval(refreshData, 5000);
+}
+
+async function loadState() {
+    try {
+        const response = await fetch(`${API_BASE}/api/state`);
+        const data = await response.json();
+        agents = data.agents || {};
+        tasks = data.tasks || {};
+        meetings = data.meetings || {};
+        updateStats();
+        updateTaskList();
+        updateMeetingList();
+        log('State loaded', 'info');
+    } catch (err) {
+        log('API unavailable — demo mode', 'warn');
+        loadDemoData();
+    }
+}
+
+function loadDemoData() {
+    agents = {
+        alex:   { id: 'alex',   name: 'Alex',   role: 'Senior Developer', department: 'Development', status: 'active', desk_x: 50,  desk_y: 60,  current_task: 'Building Stock To Me' },
+        jordan: { id: 'jordan', name: 'Jordan', role: 'Code Reviewer',    department: 'Development', status: 'active', desk_x: 190, desk_y: 60,  current_task: 'Reviewing SEC ingestion' },
+        sam:    { id: 'sam',    name: 'Sam',    role: 'Research Lead',     department: 'Research',    status: 'active', desk_x: 1110, desk_y: 60,  current_task: 'Researching EDGAR patterns' },
+        taylor: { id: 'taylor', name: 'Taylor', role: 'Data Analyst',     department: 'Research',    status: 'idle',   desk_x: 1270, desk_y: 60,  current_task: null },
+        morgan: { id: 'morgan', name: 'Morgan', role: 'Tracker',          department: 'Operations', status: 'idle',   desk_x: 50,  desk_y: 500, current_task: null },
+        casey:  { id: 'casey',  name: 'Casey',  role: 'Accountant',       department: 'Operations', status: 'active', desk_x: 190, desk_y: 500, current_task: 'Setting up expense categories' },
+        riley:  { id: 'riley',  name: 'Riley',  role: 'Project Manager',  department: 'Management', status: 'active', desk_x: 630, desk_y: 300, current_task: 'Coordinating build' },
+        broker: { id: 'broker', name: 'Broker', role: 'Stock Broker',    department: 'Trading',   status: 'active', desk_x: 1110, desk_y: 500, current_task: 'Scanning for high-trap setups' },
+    };
+    updateStats();
+    log('Demo mode active', 'warn');
+}
+
+function connectWebSocket() {
+    try {
+        ws = new WebSocket(`ws://${window.location.host}/ws`);
+        ws.onopen = () => log('WebSocket connected', 'info');
+        ws.onmessage = (event) => {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'state_update') {
+                agents = msg.data.agents || agents;
+                tasks = msg.data.tasks || tasks;
+                meetings = msg.data.meetings || meetings;
+                updateOffice();
                 updateStats();
                 updateTaskList();
                 updateMeetingList();
-                log('State loaded', 'info');
-            } catch (err) {
-                log('Failed to load state: ' + err.message, 'error');
-                // Use demo data if API fails
-                loadDemoData();
+            }
+        };
+        ws.onclose = () => { log('WebSocket disconnected — retry in 3s', 'warn'); setTimeout(connectWebSocket, 3000); };
+    } catch (err) { log('WebSocket unavailable', 'warn'); }
+}
+
+function renderOffice() {
+    const office = document.getElementById('office');
+    office.querySelectorAll('.desk, .agent, .agent-label').forEach(el => el.remove());
+    Object.values(agents).forEach(agent => {
+        const isBroker = agent.id === 'broker';
+        const desk = document.createElement('div');
+        desk.className = `desk${isBroker ? ' desk-broker' : ''}`;
+        desk.style.left = agent.desk_x + 'px';
+        desk.style.top  = agent.desk_y + 'px';
+        office.appendChild(desk);
+
+        const agentEl = document.createElement('div');
+        agentEl.className = `agent status-${agent.status === 'active' ? 'active' : agent.status === 'idle' ? 'idle' : 'busy'}`;
+        agentEl.id = `agent-${agent.id}`;
+        agentEl.style.left = (agent.desk_x + (isBroker ? 54 : 42)) + 'px';
+        agentEl.style.top  = (agent.desk_y + 22) + 'px';
+        agentEl.innerHTML = invaderSVG;
+        agentEl.onclick = () => showAgentDetail(agent);
+        office.appendChild(agentEl);
+
+        const label = document.createElement('div');
+        label.className = 'agent-label';
+        label.style.left = (agent.desk_x + 5) + 'px';
+        label.style.top  = (agent.desk_y + 85) + 'px';
+        label.textContent = `${agent.name} (${agent.role.split(' ')[0]})`;
+        office.appendChild(label);
+    });
+}
+
+function updateOffice() {
+    Object.values(agents).forEach(agent => {
+        const el = document.getElementById(`agent-${agent.id}`);
+        if (el) {
+            el.className = `agent status-${agent.status}`;
+            const inMeeting = Object.values(meetings).some(m => m.participants.includes(agent.id));
+            if (inMeeting) moveToMeeting(agent.id); else returnToDesk(agent.id);
+        }
+    });
+}
+
+function moveToMeeting(agentId) {
+    const el = document.getElementById(`agent-${agentId}`);
+    const meeting = Object.values(meetings).find(m => m.participants.includes(agentId));
+    if (!el || !meeting) return;
+    const idx = meeting.participants.indexOf(agentId);
+    const angle = (idx / meeting.participants.length) * 2 * Math.PI;
+    const radius = 100;
+    const centerX = window.innerWidth / 2 - 175;
+    const centerY = window.innerHeight / 2 - 35;
+    el.style.left = (centerX + Math.cos(angle) * radius) + 'px';
+    el.style.top  = (centerY + Math.sin(angle) * radius) + 'px';
+    el.classList.add('moving');
+}
+
+function returnToDesk(agentId) {
+    const el = document.getElementById(`agent-${agentId}`);
+    const agent = agents[agentId];
+    if (!el || !agent) return;
+    const isBroker = agentId === 'broker';
+    el.style.left = (agent.desk_x + (isBroker ? 54 : 42)) + 'px';
+    el.style.top  = (agent.desk_y + 22) + 'px';
+    el.classList.remove('moving');
+}
+
+function updateStats() {
+    const vals = Object.values(agents);
+    document.getElementById('active-count').textContent = `${vals.filter(a => a.status === 'active').length} Active`;
+    document.getElementById('idle-count').textContent   = `${vals.filter(a => a.status === 'idle').length} Idle`;
+    document.getElementById('alert-count').textContent   = `${brokerAlerts.length} Alerts`;
+}
+
+function updateTaskList() {
+    const list = document.getElementById('task-list');
+    const arr = Object.values(tasks);
+    if (!arr.length) { list.innerHTML = '<div class="task-item"><div class="task-title">No active tasks</div></div>'; return; }
+    list.innerHTML = arr.map(t => `
+        <div class="task-item ${t.status || 'pending'}">
+            <div class="task-title">${t.title}</div>
+            <div class="task-meta">${t.assigned_to ? '👤 ' + (agents[t.assigned_to]?.name || t.assigned_to) : 'Unassigned'} • ${t.status || 'pending'}</div>
+        </div>`).join('');
+}
+
+function updateMeetingList() {
+    const list = document.getElementById('meeting-list');
+    const arr = Object.values(meetings);
+    if (!arr.length) { list.innerHTML = '<div class="meeting-item"><div class="meeting-topic">No active meetings</div></div>'; return; }
+    list.innerHTML = arr.map(m => `
+        <div class="meeting-item">
+            <div class="meeting-type">${m.type}</div>
+            <div class="meeting-topic">${m.topic}</div>
+            <div class="meeting-participants">${m.participants.map(p => agents[p]?.name || p).join(', ')}</div>
+        </div>`).join('');
+}
+
+// ─── Broker Status Polling ──────────────────────────────────────────────────
+
+function startBrokerPolling() {
+    pollBrokerStatus();
+    setInterval(pollBrokerStatus, 15000); // every 15 seconds
+}
+
+async function pollBrokerStatus() {
+    try {
+        const res = await fetch('broker_status.json');
+        if (!res.ok) return;
+        const data = await res.json();
+
+        // Update last scan time
+        document.getElementById('brokerLastScan').textContent =
+            data.last_updated ? `Last scan: ${new Date(data.last_updated).toLocaleTimeString()}` : 'Last scan: —';
+
+        // Update agent task
+        if (data.job_count !== undefined && agents.broker) {
+            agents.broker.current_task = `Found ${data.job_count} jobs in pipeline`;
+            const label = document.querySelector(`#agent-broker + .agent-label, .agent-label[style*="${agents.broker.desk_x}"]`);
+        }
+
+        // Check for new alert
+        if (data.last_alert) {
+            const alertKey = data.last_alert.ticker + '_' + data.last_alert.timestamp;
+            if (!brokerAlertPopupShown || brokerAlerts[brokerAlerts.length - 1]?.ticker !== data.last_alert.ticker) {
+                showBrokerAlertPopup(data.last_alert);
+                brokerAlerts.push(data.last_alert);
+                updateBrokerAlertList();
             }
         }
-        
-        function loadDemoData() {
-            agents = {
-                alex: { id: 'alex', name: 'Alex', role: 'Senior Developer', department: 'Development', status: 'active', desk_x: 50, desk_y: 60, current_task: 'Building dashboard' },
-                jordan: { id: 'jordan', name: 'Jordan', role: 'Code Reviewer', department: 'Development', status: 'active', desk_x: 190, desk_y: 60, current_task: 'Reviewing PRs' },
-                sam: { id: 'sam', name: 'Sam', role: 'Research Lead', department: 'Research', status: 'active', desk_x: 1110, desk_y: 60, current_task: 'Researching sync options' },
-                taylor: { id: 'taylor', name: 'Taylor', role: 'Data Analyst', department: 'Research', status: 'idle', desk_x: 1270, desk_y: 60, current_task: null },
-                morgan: { id: 'morgan', name: 'Morgan', role: 'Tracker', department: 'Operations', status: 'idle', desk_x: 50, desk_y: 500, current_task: null },
-                casey: { id: 'casey', name: 'Casey', role: 'Accountant', department: 'Operations', status: 'active', desk_x: 190, desk_y: 500, current_task: 'Cataloging subscriptions' },
-                riley: { id: 'riley', name: 'Riley', role: 'Project Manager', department: 'Management', status: 'active', desk_x: 630, desk_y: 300, current_task: 'Overseeing setup' },
-                watcher: { id: 'watcher', name: 'Watcher', role: 'Pipeline Monitor', department: 'Intelligence', status: 'active', desk_x: 1110, desk_y: 500, current_task: 'Monitoring jobs folder' }
-            };
-            updateStats();
-            log('Using demo data', 'warn');
-            
-            // Load Watcher status from local file if available
-            loadWatcherStatus();
-        }
-        
-        function loadWatcherStatus() {
-            // Try to load watcher_status.json from same folder
-            fetch('watcher_status.json')
-                .then(response => response.json())
-                .then(data => {
-                    if (data && agents.watcher) {
-                        agents.watcher.current_task = `Found ${data.job_count || 0} jobs`;
-                        agents.watcher.status = data.status || 'active';
-                        updateStats();
-                        log(`Watcher: ${data.job_count} jobs in pipeline`, 'info');
-                    }
-                })
-                .catch(() => {
-                    // No status file yet
-                    if (agents.watcher) {
-                        agents.watcher.current_task = 'Waiting for first scan';
-                    }
-                });
-        }
-        
-        function connectWebSocket() {
-            try {
-                ws = new WebSocket(`ws://${window.location.host}/ws`);
-                ws.onopen = () => log('WebSocket connected', 'info');
-                ws.onmessage = (event) => {
-                    const msg = JSON.parse(event.data);
-                    if (msg.type === 'state_update') {
-                        agents = msg.data.agents || agents;
-                        tasks = msg.data.tasks || tasks;
-                        meetings = msg.data.meetings || meetings;
-                        updateOffice();
-                        updateStats();
-                        updateTaskList();
-                        updateMeetingList();
-                    }
-                };
-                ws.onclose = () => {
-                    log('WebSocket disconnected', 'warn');
-                    setTimeout(connectWebSocket, 3000);
-                };
-            } catch (err) {
-                log('WebSocket not available', 'warn');
+
+        updateStats();
+    } catch (_) { /* broker_status.json not yet created */ }
+}
+
+function updateBrokerAlertList() {
+    const list = document.getElementById('brokerAlertList');
+    if (!brokerAlerts.length) {
+        list.innerHTML = '<div class="no-alerts">No alerts — market clear</div>';
+        return;
+    }
+    list.innerHTML = brokerAlerts.slice(-5).reverse().map(a => `
+        <div class="alert-item ${a.severity || 'caution'}">
+            <div class="alert-ticker">${a.ticker}</div>
+            <div class="alert-message">${a.message}</div>
+            <div class="alert-meta">
+                <span>Score: ${a.trap_score ?? '—'}</span>
+                <span>${new Date(a.timestamp).toLocaleTimeString()}</span>
+            </div>
+        </div>`).join('');
+}
+
+function showBrokerAlertPopup(alert) {
+    brokerAlertPopupShown = true;
+    const overlay = document.getElementById('alertPopupOverlay');
+    const popup   = document.getElementById('alertPopup');
+    const isSevere = alert.severity === 'severe';
+    const isHigh   = alert.severity === 'high';
+
+    popup.className = `alert-popup${isSevere ? ' severe-popup' : isHigh ? ' high-popup' : ''}`;
+    document.getElementById('popupIcon').textContent    = isSevere ? '🚨' : isHigh ? '⚠️' : '📈';
+    document.getElementById('popupTicker').textContent  = alert.ticker || '—';
+    document.getElementById('popupTitle').textContent  = isSevere ? 'SEVERE ALERT' : isHigh ? 'High Risk Alert' : 'Trap Score Alert';
+    document.getElementById('popupTitle').className   = `popup-title${isSevere ? ' severe' : isHigh ? ' high' : ''}`;
+    document.getElementById('popupMessage').textContent = alert.message || 'Broker alert triggered.';
+    document.getElementById('popupTrapScore').textContent = alert.trap_score != null ? `${alert.trap_score.toFixed(0)}/100` : '—';
+    document.getElementById('popupDilution').textContent  = alert.dilution_pct != null ? `${alert.dilution_pct.toFixed(1)}%` : '—';
+    document.getElementById('popupTelegramBtn').textContent = '📱 Telegram Sent';
+
+    overlay.style.display = 'flex';
+    log(`🚨 BROKER ALERT: ${alert.ticker} — ${alert.message}`, 'broker');
+    updateStats();
+}
+
+function dismissAlertPopup() {
+    document.getElementById('alertPopupOverlay').style.display = 'none';
+    brokerAlertPopupShown = false;
+}
+
+// ─── Actions ───────────────────────────────────────────────────────────────────
+
+async function startBrokerResearch() {
+    log('Broker → Research collaboration requested', 'info');
+    // Move broker toward research team
+    if (agents.broker) {
+        const el = document.getElementById('agent-broker');
+        if (el) { el.style.top = '60px'; el.classList.add('moving'); }
+    }
+    if (agents.sam) {
+        const el = document.getElementById('agent-sam');
+        if (el) { el.style.right = '300px'; el.classList.add('moving'); }
+    }
+}
+
+async function startTeamMeeting() {
+    const participants = ['alex', 'jordan', 'sam', 'casey'];
+    participants.forEach((id, i) => {
+        setTimeout(() => {
+            const el = document.getElementById(`agent-${id}`);
+            if (el) {
+                const positions = [{top:430,left:540},{top:500,left:700},{top:530,left:540},{top:500,left:380}];
+                el.style.top = positions[i].top + 'px';
+                el.style.left = positions[i].left + 'px';
+                el.classList.add('moving');
             }
-        }
-        
-        function renderOffice() {
-            const office = document.getElementById('office');
-            document.querySelectorAll('.desk, .agent, .agent-label').forEach(el => el.remove());
-            
-            Object.values(agents).forEach(agent => {
-                const desk = document.createElement('div');
-                desk.className = `desk desk-${agent.id}`;
-                desk.style.left = agent.desk_x + 'px';
-                desk.style.top = agent.desk_y + 'px';
-                if (agent.status === 'busy') desk.classList.add('active');
-                office.appendChild(desk);
-                
-                const agentEl = document.createElement('div');
-                agentEl.className = `agent status-${agent.status}`;
-                agentEl.id = `agent-${agent.id}`;
-                agentEl.style.left = (agent.desk_x + 42) + 'px';
-                agentEl.style.top = (agent.desk_y + 22) + 'px';
-                agentEl.innerHTML = invaderSVG;
-                agentEl.onclick = () => showAgentDetail(agent);
-                office.appendChild(agentEl);
-                
-                const label = document.createElement('div');
-                label.className = 'agent-label';
-                label.style.left = (agent.desk_x + 10) + 'px';
-                label.style.top = (agent.desk_y + 85) + 'px';
-                label.textContent = `${agent.name} (${agent.role.split(' ')[0]})`;
-                office.appendChild(label);
-            });
-        }
-        
-        function updateOffice() {
-            Object.values(agents).forEach(agent => {
-                const el = document.getElementById(`agent-${agent.id}`);
-                if (el) {
-                    el.className = `agent status-${agent.status}`;
-                    const inMeeting = Object.values(meetings).some(m => m.participants.includes(agent.id));
-                    if (inMeeting) {
-                        moveToMeeting(agent.id);
-                    } else {
-                        returnToDesk(agent.id);
-                    }
-                }
-                const desk = document.querySelector(`.desk-${agent.id}`);
-                if (desk) desk.classList.toggle('active', agent.status === 'busy');
-            });
-            document.getElementById('meeting-table').classList.toggle('in-use', Object.keys(meetings).length > 0);
-        }
-        
-        function moveToMeeting(agentId) {
-            const el = document.getElementById(`agent-${agentId}`);
-            const meeting = Object.values(meetings).find(m => m.participants.includes(agentId));
-            if (!el || !meeting) return;
-            const idx = meeting.participants.indexOf(agentId);
-            const angle = (idx / meeting.participants.length) * 2 * Math.PI;
-            const radius = 100;
-            const centerX = window.innerWidth / 2 - 175;
-            const centerY = window.innerHeight / 2 - 35;
-            el.style.left = (centerX + Math.cos(angle) * radius) + 'px';
-            el.style.top = (centerY + Math.sin(angle) * radius) + 'px';
-            el.classList.add('moving');
-        }
-        
-        function returnToDesk(agentId) {
-            const el = document.getElementById(`agent-${agentId}`);
-            const agent = agents[agentId];
-            if (!el || !agent) return;
-            el.style.left = (agent.desk_x + 42) + 'px';
-            el.style.top = (agent.desk_y + 22) + 'px';
-            el.classList.remove('moving');
-        }
-        
-        function updateStats() {
-            const counts = { active: 0, idle: 0, busy: 0 };
-            Object.values(agents).forEach(a => { counts[a.status] = (counts[a.status] || 0) + 1; });
-            document.getElementById('active-count').textContent = `${counts.active || 0} Active`;
-            document.getElementById('idle-count').textContent = `${counts.idle || 0} Idle`;
-            document.getElementById('busy-count').textContent = `${counts.busy || 0} Busy`;
-        }
-        
-        function updateTaskList() {
-            const list = document.getElementById('task-list');
-            const taskArray = Object.values(tasks).sort((a, b) => (b.priority || 0) - (a.priority || 0));
-            if (taskArray.length === 0) {
-                list.innerHTML = '<div class="task-item"><div class="task-title">No active tasks</div></div>';
-                return;
-            }
-            list.innerHTML = taskArray.map(task => `
-                <div class="task-item ${task.status || 'pending'}">
-                    <div class="task-title">${task.title}</div>
-                    <div class="task-meta">${task.assigned_to ? '👤 ' + (agents[task.assigned_to]?.name || task.assigned_to) : 'Unassigned'} • ${task.status || 'pending'}</div>
-                </div>
-            `).join('');
-        }
-        
-        function updateMeetingList() {
-            const list = document.getElementById('meeting-list');
-            const meetingArray = Object.values(meetings);
-            if (meetingArray.length === 0) {
-                list.innerHTML = '<div class="meeting-item"><div class="meeting-topic">No active meetings</div></div>';
-                return;
-            }
-            list.innerHTML = meetingArray.map(m => `
-                <div class="meeting-item">
-                    <div class="meeting-type">${m.type}</div>
-                    <div class="meeting-topic">${m.topic}</div>
-                    <div class="meeting-participants">${m.participants.map(p => agents[p]?.name || p).join(', ')}</div>
-                </div>
-            `).join('');
-        }
-        
-        function showAgentDetail(agent) {
-            if (agent.id === 'watcher') {
-                showWatcherPopup();
-            } else {
-                log(`Selected: ${agent.name} (${agent.role}) - ${agent.current_task || 'No task'}`, 'info');
-            }
-        }
-        
-        function showWatcherPopup() {
-            // Fetch watcher status and show popup
-            fetch('watcher_status.json')
-                .then(response => response.json())
-                .then(data => {
-                    const popup = document.createElement('div');
-                    popup.style.cssText = `
-                        position: fixed;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        background: #1a1a3a;
-                        border: 2px solid #00ff88;
-                        border-radius: 10px;
-                        padding: 30px;
-                        color: #fff;
-                        z-index: 10000;
-                        min-width: 400px;
-                        box-shadow: 0 0 50px rgba(0,255,136,0.3);
-                    `;
-                    
-                    const lastScan = data.last_scan ? new Date(data.last_scan).toLocaleString() : 'Never';
-                    const nextScan = data.next_scan || 'Tomorrow 8:00 AM';
-                    
-                    popup.innerHTML = `
-                        <h2 style="color: #00ff88; margin-top: 0;">👁️ Watcher Status</h2>
-                        <div style="margin: 20px 0;">
-                            <div style="margin-bottom: 15px;">
-                                <strong style="color: #4a4a6a;">Status:</strong> 
-                                <span style="color: #00ff88; text-transform: uppercase;">${data.status || 'Active'}</span>
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <strong style="color: #4a4a6a;">Jobs in Pipeline:</strong> 
-                                <span style="font-size: 2em; color: #fff;">${data.job_count || 0}</span>
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <strong style="color: #4a4a6a;">Last Scan:</strong> ${lastScan}
-                            </div>
-                            <div style="margin-bottom: 15px;">
-                                <strong style="color: #4a4a6a;">Next Scan:</strong> ${nextScan}
-                            </div>
-                            <div>
-                                <strong style="color: #4a4a6a;">Watching:</strong> 
-                                <span style="font-size: 0.8em; color: #888;">${data.watch_folder || 'JOBS BIDDING'}</span>
-                            </div>
-                        </div>
-                        <button onclick="this.parentElement.remove(); document.getElementById('popup-overlay').remove();" 
-                                style="background: #00ff88; color: #000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                            Close
-                        </button>
-                    `;
-                    
-                    // Add overlay
-                    const overlay = document.createElement('div');
-                    overlay.id = 'popup-overlay';
-                    overlay.style.cssText = `
-                        position: fixed;
-                        top: 0; left: 0; right: 0; bottom: 0;
-                        background: rgba(0,0,0,0.7);
-                        z-index: 9999;
-                    `;
-                    overlay.onclick = () => {
-                        popup.remove();
-                        overlay.remove();
-                    };
-                    
-                    document.body.appendChild(overlay);
-                    document.body.appendChild(popup);
-                })
-                .catch(err => {
-                    log('Watcher status not available yet', 'warn');
-                    alert('Watcher has not run yet. Run watcher_agent.py first.');
-                });
-        }
-        
-        async function startTeamMeeting() {
-            try {
-                const participants = Object.keys(agents).slice(0, 4).join(',');
-                await fetch(`${API_BASE}/api/meetings?meeting_type=team&participants=${participants}&location=conference&topic=Sprint Planning`, { method: 'POST' });
-                log('Team meeting started', 'info');
-            } catch (err) {
-                log('Demo: Simulating team meeting', 'info');
-                meetings['demo1'] = { id: 'demo1', type: 'team', participants: ['alex', 'jordan', 'sam', 'casey'], topic: 'Sprint Planning', location: 'conference' };
-                updateOffice();
-                updateMeetingList();
-                setTimeout(() => {
-                    delete meetings['demo1'];
-                    updateOffice();
-                    updateMeetingList();
-                    log('Meeting ended', 'info');
-                }, 5000);
-            }
-        }
-        
-        async function createTask() {
-            const title = prompt('Task title:');
-            if (!title) return;
-            try {
-                await fetch(`${API_BASE}/api/tasks?title=${encodeURIComponent(title)}&priority=1`, { method: 'POST' });
-                log('Task created: ' + title, 'info');
-            } catch (err) {
-                log('Demo: Task "' + title + '" created', 'info');
-                const id = 'task' + Date.now();
-                tasks[id] = { id, title, status: 'pending', priority: 1 };
-                updateTaskList();
-            }
-        }
-        
-        async function refreshData() {
-            await loadState();
-            renderOffice();
-            log('Data refreshed', 'info');
-        }
-        
-        function log(message, type = 'info') {
-            const console = document.getElementById('log-console');
-            const time = new Date().toLocaleTimeString();
-            const entry = document.createElement('div');
-            entry.className = `log-entry ${type}`;
-            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
-            console.appendChild(entry);
-            console.scrollTop = console.scrollHeight;
-        }
-        
-        init();
-    </script>
+        }, i * 200);
+    });
+    log('Team meeting started', 'info');
+}
+
+async function createTask() {
+    const title = prompt('Task title:');
+    if (!title) return;
+    try {
+        await fetch(`${API_BASE}/api/tasks?title=${encodeURIComponent(title)}&priority=1`);
+        log('Task created: ' + title, 'info');
+    } catch (_) { log('Demo: task "' + title + '" created', 'info'); }
+}
+
+async function refreshData() {
+    await loadState();
+    renderOffice();
+    log('Data refreshed', 'info');
+}
+
+function showAgentDetail(agent) {
+    if (agent.id === 'broker') {
+        pollBrokerStatus();
+        log('Broker: scanning for trap score setups', 'broker');
+    } else {
+        log(`Selected: ${agent.name} (${agent.role}) — ${agent.current_task || 'No task'}`, 'info');
+    }
+}
+
+function log(msg, type = 'info') {
+    const console = document.getElementById('log-console');
+    const time = new Date().toLocaleTimeString();
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${type}`;
+    entry.innerHTML = `<span class="log-time">[${time}]</span> ${msg}`;
+    console.appendChild(entry);
+    console.scrollTop = console.scrollHeight;
+}
+
+init();
+</script>
 </body>
 </html>

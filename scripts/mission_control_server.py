@@ -71,6 +71,13 @@ state = {
         "broker": {
             "id": "broker", "name": "Broker", "role": "Stock Broker",
             "department": "Trading", "status": "active",
+            "desk_x": 1110, "desk_y": 500,
+            "current_task": "Scanning for high-trap setups",
+            "mission": "trading"
+        },
+        "broker": {
+            "id": "broker", "name": "Broker", "role": "Stock Broker",
+            "department": "Trading", "status": "active",
             "desk_x": 420, "desk_y": 500,
             "current_task": "Analyzing small-cap setups",
             "mission": "trading"
