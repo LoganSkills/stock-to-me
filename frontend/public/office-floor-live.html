@@ -69,6 +69,41 @@
         .zone-ops       { bottom: 120px; left: 50px; color: #ffaa00; }
         .zone-trading   { bottom: 120px; right: 50px; color: #ff6688; }
 
+        /* Agent Info Panel */
+        .info-panel {
+            position: fixed;
+            top: 20px; right: 20px;
+            width: 320px;
+            background: rgba(20,20,35,0.97);
+            border-radius: 12px;
+            padding: 20px;
+            color: #e0e0e0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #3a3a5a;
+            z-index: 2000;
+            animation: slideInRight 0.3s ease;
+        }
+        @keyframes slideInRight { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
+        .info-panel h3 { margin-bottom: 12px; color: #00ff88; font-size: 1.1rem; }
+        .info-panel h3.broker-heading { color: #ff6688; }
+        .info-panel-section { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .info-panel-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .info-panel h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 4px; }
+        .info-panel p, .info-panel li { font-size: 0.85rem; color: #ccc; }
+        .info-panel ul { list-style: none; padding: 0; }
+        .info-panel li::before { content: '• '; color: #00ff88; }
+        .info-panel .status-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
+        .info-panel .status-active { background: rgba(0,255,136,0.2); color: #00ff88; }
+        .info-panel .status-idle   { background: rgba(255,170,0,0.2); color: #ffaa00; }
+        .info-panel .status-busy   { background: rgba(255,68,68,0.2); color: #ff4444; }
+        .close-btn {
+            position: absolute; top: 10px; right: 14px;
+            background: none; border: none; color: #666; font-size: 1.2rem; cursor: pointer;
+        }
+        .close-btn:hover { color: #fff; }
+
         .desk {
             position: absolute;
             width: 120px; height: 80px;
@@ -624,12 +659,53 @@ async function refreshData() {
 }
 
 function showAgentDetail(agent) {
-    if (agent.id === 'broker') {
-        pollBrokerStatus();
-        log('Broker: scanning for trap score setups', 'broker');
-    } else {
-        log(`Selected: ${agent.name} (${agent.role}) — ${agent.current_task || 'No task'}`, 'info');
+    const existing = document.getElementById('agentInfoPanel');
+    if (existing) existing.remove();
+
+    const isBroker = agent.id === 'broker';
+    const panel = document.createElement('div');
+    panel.id = 'agentInfoPanel';
+    panel.className = 'info-panel';
+
+    let actionsHtml = '';
+    if (isBroker) {
+        actionsHtml = `
+            <div class="info-panel-section">
+                <h4>Broker Actions</h4>
+                <ul>
+                    <li>Request research analysis from Sam + Taylor</li>
+                    <li>Flag high trap-score names for review</li>
+                    <li>Run dilution impact check on target names</li>
+                    <li>Scan universe for financing setups</li>
+                </ul>
+            </div>`;
     }
+
+    panel.innerHTML = `
+        <button class="close-btn" onclick="document.getElementById('agentInfoPanel').remove()">×</button>
+        <h3 class="${isBroker ? 'broker-heading' : ''}">${agent.name} — ${agent.role}</h3>
+        ${isBroker ? '<p style="color:#ff6688;font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">📈 Trading Department</p>' : ''}
+        <div class="info-panel-section">
+            <h4>Department</h4>
+            <p>${agent.department}</p>
+        </div>
+        <div class="info-panel-section">
+            <h4>Status</h4>
+            <span class="status-badge status-${agent.status}">${(agent.status || 'idle').toUpperCase()}</span>
+        </div>
+        <div class="info-panel-section">
+            <h4>Current Task</h4>
+            <p>${agent.current_task || 'No active task'}</p>
+        </div>
+        ${actionsHtml}
+        <div class="info-panel-section">
+            <h4>Mission</h4>
+            <p>${agent.mission || '—'}</p>
+        </div>
+    `;
+
+    document.body.appendChild(panel);
+    log(`Selected: ${agent.name} (${agent.role})`, 'info');
 }
 
 function log(msg, type = 'info') {
