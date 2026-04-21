@@ -1,5 +1,4 @@
-"""Mission Control server — provides the /api/state, /api/meetings, /api/tasks endpoints
-and a WebSocket broadcast channel for the live office floor."""
+"""Mission Control server — serves the live office floor at port 8765."""
 
 import json
 import asyncio
@@ -9,11 +8,16 @@ from pathlib import Path
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import Response
+from fastapi.responses import RedirectResponse
 
 app = FastAPI(title="Mission Control", version="1.0.0")
 
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ─── In-memory state ──────────────────────────────────────────────────────────────
 
@@ -75,13 +79,6 @@ state = {
             "current_task": "Scanning for high-trap setups",
             "mission": "trading"
         },
-        "broker": {
-            "id": "broker", "name": "Broker", "role": "Stock Broker",
-            "department": "Trading", "status": "active",
-            "desk_x": 420, "desk_y": 500,
-            "current_task": "Analyzing small-cap setups",
-            "mission": "trading"
-        },
     },
     "tasks": {},
     "meetings": {},
@@ -92,19 +89,36 @@ meetings_counter = 0
 websockets: list[WebSocket] = []
 
 
-# ─── WebSocket broadcast ───────────────────────────────────────────────────────
+# ─── Resolve the correct static directory ────────────────────────────────────────
 
-async def broadcast(data: dict):
-    msg = json.dumps(data)
-    for ws in websockets[:]:
-        try:
-            await ws.send_text(msg)
-        except Exception:
-            websockets.remove(ws)
+def _static_dir() -> Path:
+    """Find frontend/public relative to this script."""
+    script_path = Path(__file__).resolve()
+    project_root = script_path.parent.parent  # scripts/ → stock-to-me/
+    static_dir = project_root / "frontend" / "public"
+    if static_dir.exists():
+        return static_dir
+    # Fallback: serve from project root
+    return project_root
+
+
+# ─── Redirect / to office-floor-live.html ───────────────────────────────────────
+
+@app.get("/")
+def root():
+    static_dir = _static_dir()
+    index_path = static_dir / "office-floor-live.html"
+    if index_path.exists():
+        return RedirectResponse(url="/office-floor-live.html")
+    return {
+        "app": "Mission Control",
+        "version": "1.0.0",
+        "note": "office-floor-live.html not found. Run this script from the stock-to-me directory.",
+        "static_dir": str(static_dir),
+    }
 
 
 # ─── REST endpoints ────────────────────────────────────────────────────────────
-
 
 @app.get("/api/state")
 def get_state():
@@ -172,6 +186,15 @@ def update_agent(agent_id: str, status: str = None, current_task: str = None):
 
 # ─── WebSocket ─────────────────────────────────────────────────────────────────
 
+async def broadcast(data: dict):
+    msg = json.dumps(data)
+    for ws in websockets[:]:
+        try:
+            await ws.send_text(msg)
+        except Exception:
+            websockets.remove(ws)
+
+
 @app.websocket("/ws")
 async def websocket_endpoint(ws: WebSocket):
     await ws.accept()
@@ -198,9 +221,13 @@ async def websocket_endpoint(ws: WebSocket):
 
 # ─── Static serving ─────────────────────────────────────────────────────────────
 
-app.mount("/", StaticFiles(directory=".", html=True), name="static")
+static_dir = _static_dir()
+print(f"Serving static files from: {static_dir}")
+app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
 
 
 if __name__ == "__main__":
     import uvicorn
+    print("🚀 Mission Control running at http://localhost:8765")
+    print(f"   Static files: {static_dir}")
     uvicorn.run(app, host="0.0.0.0", port=8765)
