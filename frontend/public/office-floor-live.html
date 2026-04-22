@@ -430,7 +430,7 @@
 
         <div class="modal-actions">
             <button class="btn-cancel" onclick="closeDispatchModal()">Cancel</button>
-            <button class="btn-submit" id="dispatchSubmit" onclick="submitMission()">Assign Mission</button>
+            <button type="button" class="btn-submit" id="dispatchSubmit" onclick="submitMission()">Assign Mission</button>
         </div>
     </div>
 </div>
@@ -723,12 +723,32 @@ function updateMeetingList() {
 function openDispatchModal() {
     document.getElementById('dispatchModal').style.display = 'flex';
     document.getElementById('dispatchTitle').focus();
-    // Re-check submit state now that agents are loaded
     setTimeout(updateDispatchPreview, 50);
+
+    // Add Enter key listener to all modal inputs
+    const modal = document.getElementById('dispatchModal');
+    const handler = (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
+            e.preventDefault();
+            submitMission();
+        }
+    };
+    modal.querySelectorAll('input,textarea,select').forEach(el => {
+        el.addEventListener('keydown', handler);
+    });
+    // Remember handler so we can remove it later
+    modal._enterHandler = handler;
 }
 
 function closeDispatchModal(event) {
     if (event && event.target !== event.currentTarget) return;
+    const modal = document.getElementById('dispatchModal');
+    if (modal._enterHandler) {
+        modal.querySelectorAll('input,textarea,select').forEach(el => {
+            el.removeEventListener('keydown', modal._enterHandler);
+        });
+        delete modal._enterHandler;
+    }
     document.getElementById('dispatchModal').style.display = 'none';
 }
 
@@ -783,6 +803,8 @@ async function submitMission() {
     const agentId = document.getElementById('dispatchAgent').value;
     const details = document.getElementById('dispatchDetails').value.trim();
     const priority = document.getElementById('dispatchPriority').value;
+
+    log(`submitMission called — title="${title}" agentId="${agentId}"`, 'info');
 
     // Guard: must have title and agent
     if (!title) {
