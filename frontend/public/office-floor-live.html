@@ -754,15 +754,10 @@ function updateDispatchPreview() {
 
     const canSubmit = title.length > 0 && agentId;
     submit.disabled = !canSubmit;
-    // Use inline styles because CSS :disabled requires HTML disabled attribute
     if (!canSubmit) {
         submit.setAttribute('disabled', 'disabled');
-        submit.style.opacity = '0.5';
-        submit.style.cursor = 'not-allowed';
     } else {
         submit.removeAttribute('disabled');
-        submit.style.opacity = '1';
-        submit.style.cursor = 'pointer';
     }
 
     if (!title) {
@@ -789,7 +784,15 @@ async function submitMission() {
     const details = document.getElementById('dispatchDetails').value.trim();
     const priority = document.getElementById('dispatchPriority').value;
 
-    if (!title || !agentId) return;
+    // Guard: must have title and agent
+    if (!title) {
+        log('Mission requires a name — type something first', 'warn');
+        return;
+    }
+    if (!agentId) {
+        log('Mission requires an agent assignment — pick someone first', 'warn');
+        return;
+    }
 
     const taskId = `mission_${++missionCounter}`;
     const priorityNum = { low: 1, normal: 2, high: 3, urgent: 4 }[priority] || 2;
@@ -816,13 +819,21 @@ async function submitMission() {
     updateTaskList();
     updateStats();
     closeDispatchModal();
+    log(`📋 Mission dispatched: "${title}" → ${agents[agentId]?.name}`, 'mission');
 
     // Dispatch to API
     try {
-        await fetch(`${API_BASE}/api/tasks?title=${encodeURIComponent(title)}&priority=${priorityNum}&assigned_to=${agentId}`);
-    } catch (_) { /* demo mode */ }
-
-    log(`📋 Mission assigned: "${title}" → ${agents[agentId]?.name}`, 'mission');
+        const resp = await fetch(`${API_BASE}/api/tasks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, assigned_to: agentId, priority: priorityNum, details }),
+        });
+        if (!resp.ok) throw new Error('server error ' + resp.status);
+        const created = await resp.json();
+        log(`Server confirmed mission ${created.id}`, 'info');
+    } catch (err) {
+        log('Server unavailable — mission saved locally only', 'warn');
+    }
 }
 
 async function submitTaskToAPI(task) {
