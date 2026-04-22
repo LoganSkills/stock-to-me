@@ -430,7 +430,7 @@
 
         <div class="modal-actions">
             <button class="btn-cancel" onclick="closeDispatchModal()">Cancel</button>
-            <button type="button" class="btn-submit" id="dispatchSubmit" onclick="submitMission()">Assign Mission</button>
+            <button type="button" class="btn-submit" id="dispatchSubmit" onclick="window._testBtn=1;submitMission();">Assign Mission</button>
         </div>
     </div>
 </div>
@@ -549,6 +549,12 @@ async function init() {
     startBrokerPolling();
     setInterval(refreshData, 5000);
     setInterval(pollBrokerStatus, 15000);
+
+    // Debug: log ALL clicks on the page
+    document.addEventListener('click', (e) => {
+        const tag = e.target.tagName + '#' + e.target.id + '.' + e.target.className;
+        log('CLICK: ' + tag, 'info');
+    });
 }
 
 async function loadState() {
