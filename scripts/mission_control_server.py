@@ -136,7 +136,7 @@ def get_state():
 
 
 @app.post("/api/tasks")
-def create_task(request: Request):
+async def create_task(request: Request):
     """Create a task/mission. Accepts JSON body or query params."""
     global tasks_counter
 
@@ -193,7 +193,7 @@ def update_task(task_id: str, status: str = None):
 
 
 @app.post("/api/meetings")
-def create_meeting(request: Request):
+async def create_meeting(request: Request):
     global meetings_counter
     body = await request.json().catch(lambda: {})
     meetings_counter += 1
